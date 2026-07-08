@@ -1,0 +1,663 @@
+{
+  "$schema": "https://unpkg.com/@camunda/zeebe-element-templates-json-schema/resources/schema.json",
+  "name": "Zammad Connector",
+  "id": "io.camunda.zammad-connector-template",
+  "version": 20,
+  "description": "Create, Search, Update, and Delete Zammad support tickets from Camunda 8 processes",
+  "category": {
+    "id": "connectors",
+    "name": "Connectors"
+  },
+  "appliesTo": [
+    "bpmn:Task"
+  ],
+  "elementType": {
+    "value": "bpmn:ServiceTask"
+  },
+  "groups": [
+    {
+      "id": "authentication",
+      "label": "Authentication"
+    },
+    {
+      "id": "domain",
+      "label": "Domain"
+    },
+    {
+      "id": "operation",
+      "label": "Operation"
+    },
+    {
+      "id": "parameters",
+      "label": "Parameters"
+    },
+    {
+      "id": "requestBody",
+      "label": "Request Body"
+    },
+    {
+      "id": "output",
+      "label": "Response mapping"
+    },
+    {
+      "id": "errors",
+      "label": "Error handling"
+    },
+    {
+      "id": "retries",
+      "label": "Retries"
+    }
+  ],
+  "properties": [
+    {
+      "value": "io.camunda:http-json:1",
+      "binding": {
+        "property": "type",
+        "type": "zeebe:taskDefinition"
+      },
+      "type": "Hidden"
+    },
+    {
+      "id": "accesstoken",
+      "label": "Access Token",
+      "description": "Enter Access Token",
+      "type": "String",
+      "group": "authentication",
+      "feel": "optional",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "accesstoken"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "zammadOperation",
+      "label": "Zammad Operation",
+      "description": "Select Zammad Operation",
+      "type": "Dropdown",
+      "group": "operation",
+      "value": "createTicket",
+      "choices": [
+        {
+          "name": "Create Ticket",
+          "value": "createTicket"
+        },
+        {
+          "name": "Update Ticket",
+          "value": "updateTicket"
+        },
+        {
+          "name": "Delete Ticket",
+          "value": "deleteTicket"
+        },
+        {
+          "name": "Get Ticket",
+          "value": "getTicket"
+        },
+        {
+          "name": "Search User",
+          "value": "searchUser"
+        },
+        {
+          "name": "Create User",
+          "value": "createUser"
+        }
+      ],
+      "binding": {
+        "type": "zeebe:input",
+        "name": "zammadOperation"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "baseUrl",
+      "label": "Domain",
+      "description": "Enter the Zammad Base URL (eg. https://dev.example.com or IP adresss).",
+      "feel": "optional",
+      "type": "Text",
+      "group": "domain",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "baseUrl"
+      },
+      "constraints": {
+        "notEmpty": true
+      }
+    },
+    {
+      "id": "title",
+      "label": "Title",
+      "description": "Enter the Title",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "title"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "id": "group",
+      "label": "Group",
+      "description": "Enter the Group Name",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "group"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "id": "email",
+      "label": "Customer Email",
+      "description": "Enter the Customer Email",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "email"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket",
+          "createUser"
+        ]
+      }
+    },
+    {
+      "id": "firstName",
+      "label": "First Name",
+      "description": "Enter the First Name",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "firstName"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "createUser"
+      }
+    },
+    {
+      "id": "lastName",
+      "label": "Last Name",
+      "description": "Enter the Last Name",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "lastName"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "createUser"
+      }
+    },
+    {
+      "id": "state",
+      "label": "State",
+      "description": "Select the State of Ticket",
+      "type": "Dropdown",
+      "value": "open",
+      "group": "requestBody",
+      "choices": [
+        {
+          "name": "NEW",
+          "value": "new"
+        },
+        {
+          "name": "OPEN",
+          "value": "open"
+        },
+        {
+          "name": "CLOSED",
+          "value": "closed"
+        },
+        {
+          "name": "PENDING CLOSE",
+          "value": "pending close"
+        },
+        {
+          "name": "other",
+          "value": "other"
+        }
+      ],
+      "binding": {
+        "type": "zeebe:input",
+        "name": "state"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "id": "otherState",
+      "label": "Other State",
+      "description": "Enter State if 'Other' is selected",
+      "type": "String",
+      "group": "requestBody",
+      "feel": "optional",
+      "value": " ",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "state"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "state",
+        "equals": "other"
+      }
+    },
+    {
+      "id": "priority",
+      "label": "Priority",
+      "description": "Enter the priority e.g : 1 low or 2 normal or 3 high",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "priority"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "id": "subject",
+      "label": "Subject",
+      "description": "Enter the Subject ",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "subject"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "id": "messagebody",
+      "label": "Message body",
+      "description": "Enter the message body",
+      "feel": "optional",
+      "type": "Text",
+      "group": "requestBody",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "messagebody"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "id": "internal",
+      "label": "Internal",
+      "type": "Dropdown",
+      "group": "requestBody",
+      "value": "false",
+      "choices": [
+        {
+          "name": "True",
+          "value": "true"
+        },
+        {
+          "name": "False",
+          "value": "false"
+        }
+      ],
+      "binding": {
+        "type": "zeebe:input",
+        "name": "internal"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "createTicket"
+      }
+    },
+    {
+      "id": "ticketId",
+      "label": "Ticket ID",
+      "description": "Enter Ticket ID",
+      "type": "Text",
+      "feel": "optional",
+      "group": "parameters",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "ticketId"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "updateTicket",
+          "deleteTicket",
+          "getTicket"
+        ]
+      }
+    },
+    {
+      "id": "email",
+      "label": "Email ID",
+      "description": "Enter Email ID",
+      "type": "Text",
+      "feel": "optional",
+      "group": "parameters",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "email"
+      },
+      "constraints": {
+        "notEmpty": true
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "searchUser"
+        ]
+      }
+    },
+    {
+      "id": "createTicketUrl",
+      "label": "API URL",
+      "description": "Create Ticket URL",
+      "type": "Hidden",
+      "value": "= baseUrl + \"/api/v1/tickets\"",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "url"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "createTicket"
+      }
+    },
+    {
+      "id": "commonTicketUrl",
+      "type": "Hidden",
+      "value": "=string(baseUrl) + \"/api/v1/tickets/\" + string(ticketId)",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "url"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "getTicket",
+          "updateTicket",
+          "deleteTicket"
+        ]
+      }
+    },
+    {
+      "id": "searchUserurl",
+      "type": "Hidden",
+      "value": "=baseUrl + \"/api/v1/users/search?query=\" + email",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "url"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "searchUser"
+      }
+    },
+    {
+      "id": "createUserurl",
+      "type": "Hidden",
+      "value": "=baseUrl + \"/api/v1/users\"",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "url"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "createUser"
+      }
+    },
+    {
+      "id": "createMethod",
+      "type": "Hidden",
+      "value": "POST",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "method"
+      }
+    },
+    {
+      "id": "getMethod",
+      "type": "Hidden",
+      "value": "GET",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "method"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "searchUser",
+          "getTicket"
+        ]
+      }
+    },
+    {
+      "id": "deleteMethod",
+      "type": "Hidden",
+      "value": "DELETE",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "method"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "deleteTicket"
+      }
+    },
+    {
+      "id": "updateMethod",
+      "type": "Hidden",
+      "value": "PUT",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "method"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "updateTicket"
+      }
+    },
+    {
+      "type": "Hidden",
+      "value": "application/json",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "headers.ContentType"
+      }
+    },
+    {
+      "type": "Hidden",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "headers.Authorization"
+      },
+      "value": "= \"Token token=\" + accesstoken"
+    },
+    {
+      "label": "Request Body",
+      "type": "Hidden",
+      "value": "={\"title\": title,\"customer\": email,\"group\": group,\"state\": state,\"priority\": priority,\"article\":{\"subject\": subject,\"body\": messagebody,\"internal\": if internal = \"true\" then true else false}}",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "body"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "oneOf": [
+          "createTicket",
+          "updateTicket"
+        ]
+      }
+    },
+    {
+      "label": "Request Body",
+      "type": "Hidden",
+      "value": "={\"firstname\": firstname,\"lastname\": lastname,\"email\": email,\"role_ids\": [3]}",
+      "name": "body",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "body"
+      },
+      "condition": {
+        "property": "zammadOperation",
+        "equals": "createUser"
+      }
+    },
+    {
+      "label": "Result Variable",
+      "description": "Process variable to store response",
+      "type": "String",
+      "group": "output",
+      "value": "result",
+      "binding": {
+        "type": "zeebe:taskHeader",
+        "key": "resultVariable"
+      }
+    },
+    {
+      "label": "Result Expression",
+      "description": "Expression to map the response into process variables",
+      "type": "Text",
+      "group": "output",
+      "feel": "required",
+      "value": "={ result: response.body }",
+      "binding": {
+        "type": "zeebe:taskHeader",
+        "key": "resultExpression"
+      }
+    },
+    {
+      "id": "errorExpression",
+      "label": "Error expression",
+      "description": "Expression to handle errors. Details in the <a href=\"https://docs.camunda.io/docs/components/connectors/use-connectors/\" target=\"_blank\">documentation</a>.",
+      "feel": "required",
+      "type": "Text",
+      "group": "errors",
+      "binding": {
+        "key": "errorExpression",
+        "type": "zeebe:taskHeader"
+      }
+    },
+    {
+      "id": "connectionTimeout",
+      "label": "Connection timeout",
+      "description": "Timeout in seconds (0 for infinite)",
+      "group": "retries",
+      "type": "String",
+      "value": "120",
+      "binding": {
+        "type": "zeebe:input",
+        "name": "connectionTimeoutInSeconds"
+      }
+    },
+    {
+      "id": "retryCount",
+      "label": "Retries",
+      "description": "Number of retries",
+      "value": "3",
+      "feel": "optional",
+      "group": "retries",
+      "binding": {
+        "property": "retries",
+        "type": "zeebe:taskDefinition"
+      },
+      "type": "String"
+    },
+    {
+      "id": "retryBackoff",
+      "label": "Retry backoff",
+      "description": "ISO-8601 duration to wait between retries",
+      "value": "PT0S",
+      "group": "retries",
+      "binding": {
+        "key": "retryBackoff",
+        "type": "zeebe:taskHeader"
+      },
+      "type": "String"
+    }
+  ],
+  "icon": {
+    "contents": "data:image/png;base64,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"
+  }
+}
