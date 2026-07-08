@@ -27,6 +27,7 @@ The connector supports the following operations:
 
 ---
 ## Connector UI
+<img width="938" height="465" alt="image" src="https://github.com/user-attachments/assets/9b3a7008-e86f-4cf5-8612-cdc879e36d50" />
 
 
 ---
