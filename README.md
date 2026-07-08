@@ -29,6 +29,7 @@ The connector supports the following operations:
 ## Connector UI
 <img width="938" height="465" alt="image" src="https://github.com/user-attachments/assets/9b3a7008-e86f-4cf5-8612-cdc879e36d50" />
 
+<img width="993" height="314" alt="Screenshot 2026-07-09 001746" src="https://github.com/user-attachments/assets/8883047e-1b7d-42e1-afac-f81b6d3df2fc" />
 
 ---
 
