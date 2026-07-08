@@ -116,25 +116,5 @@ Camunda Modeler → resources → element-templates
 2. Paste the downloaded **Zammad Connector Template JSON**
 
 3. Restart Modeler
-   
-```
-# Operations
 
-## Create Ticket
-
-Creates a new support ticket.
-
-### Required Inputs
-
-| Property | Description     |
-| -------- | --------------- |
-| Domain   | Zammad Base URL |
-| Customer | Customer Email  |
-| Group    | Ticket Group    |
-| Title    | Ticket Title    |
-| State    | Ticket State    |
-| Priority | Ticket Priority |
-| Subject  | Article Subject |
-| Body     | Article Body    |
-
-
+----
