@@ -40,7 +40,6 @@ The connector supports the following operations:
 Before setting up the Zammad Connector, ensure the following are installed:
 
 * Docker Desktop
-* Git
 * Camunda 8 (Self-Managed or SaaS)
 * Camunda Modeler 5.x or later
 
